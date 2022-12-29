@@ -1,0 +1,70 @@
+{{- range .Values.applications }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .syncWave | quote }} 
+    {{- with .annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "argocd-app-of-apps.labels" $ | nindent 4 }}
+spec:
+  revisionHistoryLimit: {{ .revisionHistoryLimit }}
+  {{- with .ignoreDifferences }}
+  ignoreDifferences:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  destination:
+    name: {{ .clusterName }}
+    namespace: {{ .namespace }}
+{{- if .projectName }}
+  project: {{ .projectName }}
+{{- end }}
+  source:
+{{- if .chart }}
+    chart: {{ .chart }}
+{{- end }}
+    repoURL: {{ .repoURL }}
+    targetRevision: {{ .targetRevision }}
+    path: {{ .path }}
+{{- if .chart }}
+    helm:
+      releaseName: {{ .releaseName }}
+{{- if .skipCrds }}
+      skipCrds: {{ .skipCrds }}
+{{- end }}
+{{- if .valueFiles }}
+      valueFiles: {{ .valueFiles }}
+{{- end }}
+{{- if .values }}
+      values: |
+        {{ .values | nindent 8 }}
+{{- end }}
+{{- end }}
+  syncPolicy:
+{{- with .automated }}
+    automated:
+{{- toYaml . | nindent 6 }}
+{{- end }}
+{{- if .managedNamespaceMetadata }}
+    managedNamespaceMetadata:
+      {{- toYaml .managedNamespaceMetadata | nindent 6 }}
+{{- end }}
+{{- if .syncOptions }}
+    syncOptions: {{ .syncOptions }}
+{{- end }}
+{{- if and .retry (ne (.retry.limit | int ) 0) }}
+    retry:
+      limit: {{ .retry.limit }}
+      backoff:
+        duration: {{ .retry.backoff_duration }}
+        factor: {{ .retry.backoff_factor }}
+        maxDuration: {{ .retry.backoff_maxduration }}
+{{- end }}
+{{- end }}
