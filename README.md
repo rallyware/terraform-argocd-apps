@@ -14,22 +14,30 @@ module "aweasome_module" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
+| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | >= 1.2 |
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | >= 1.2 |
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apps_label"></a> [apps\_label](#module\_apps\_label) | cloudposse/label/null | 0.25.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [argocd_application.apps](https://registry.terraform.io/providers/oboukili/argocd/latest/docs/resources/application) | resource |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_apps"></a> [apps](#input\_apps) | n/a | <pre>list(object(<br>    {<br>      name        = string<br>      repository  = string<br>      version     = string<br>      cluster     = string<br>      project     = string<br>      namespace   = optional(string, "default")<br>      chart       = optional(string, "")<br>      path        = optional(string, "")<br>      values      = optional(string, "")<br>      skip_crds   = optional(bool, false)<br>      value_files = optional(list(string), [])<br>      max_history = optional(number, 10)<br>      sync_wave   = optional(number, 50)<br>      annotations = optional(map(string), {})<br>      ignore_differences = optional(<br>        list(object(<br>          {<br>            group             = optional(string)<br>            kind              = optional(string)<br>            jqPathExpressions = optional(list(string))<br>            jsonPointers      = optional(list(string))<br>          }<br>        ))<br>      )<br>      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])<br><br>      retry = optional(<br>        object(<br>          {<br>            limit                = optional(number)<br>            backoff_duration     = optional(string)<br>            backoff_max_duration = optional(string)<br>            backoff_factor       = optional(number)<br>          }<br>        ),<br>        {<br>          limit                = 0<br>          backoff_duration     = "30s"<br>          backoff_max_duration = "1m"<br>          backoff_factor       = 2<br>        }<br>      )<br><br>      automated = optional(<br>        object(<br>          {<br>            prune       = optional(bool)<br>            self_heal   = optional(bool)<br>            allow_empty = optional(bool)<br>          }<br>        ),<br>        {<br>          prune       = true<br>          self_heal   = true<br>          allow_empty = true<br>        }<br>      )<br><br>      managed_namespace_metadata = optional(<br>        object(<br>          {<br>            labels      = optional(map(string))<br>            annotations = optional(map(string))<br>          }<br>      ), {})<br>    }<br>  ))</pre> | n/a | yes |
+| <a name="input_parent_app"></a> [parent\_app](#input\_parent\_app) | A parent app configuration. | <pre>object(<br>    {<br>      name         = string<br>      namespace    = optional(string, "argo")<br>      annotations  = optional(map(string))<br>      project      = optional(string)<br>      wait         = optional(bool, false)<br>      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])<br><br>      helm = optional(<br>        object(<br>          {<br>            repository = optional(string)<br>            chart      = optional(string)<br>            version    = optional(string)<br>          }<br>        ),<br>        {<br>          repository = "https://rallyware.github.io/terraform-argocd-apps"<br>          chart      = "argocd-app-of-apps"<br>          version    = "0.1.0"<br>        }<br>      )<br><br>      timeouts = optional(<br>        object(<br>          {<br>            create = optional(string)<br>            update = optional(string)<br>            delete = optional(string)<br>          }<br>        ),<br>        {<br>          create = "60m"<br>          update = "60m"<br>          delete = "60m"<br>        }<br>      )<br><br>      retry = optional(<br>        object(<br>          {<br>            limit                = optional(number)<br>            backoff_duration     = optional(string)<br>            backoff_max_duration = optional(string)<br>            backoff_factor       = optional(number)<br>          }<br>        ),<br>        {<br>          limit                = 0<br>          backoff_duration     = "30s"<br>          backoff_max_duration = "1m"<br>          backoff_factor       = 2<br>        }<br>      )<br><br>      destination = optional(<br>        object(<br>          {<br>            name      = optional(string)<br>            namespace = optional(string)<br>          }<br>        ),<br>        {<br>          name      = "in-cluster"<br>          namespace = "argo"<br>        }<br>      )<br><br>      automated = optional(<br>        object(<br>          {<br>            prune       = optional(bool)<br>            self_heal   = optional(bool)<br>            allow_empty = optional(bool)<br>          }<br>        ),<br>        {<br>          prune       = true<br>          self_heal   = true<br>          allow_empty = true<br>        }<br>      )<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
@@ -52,7 +60,7 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_test"></a> [test](#output\_test) | Default output |
+| <a name="output_apps"></a> [apps](#output\_apps) | A list of deployed apps |
 <!-- END_TF_DOCS -->
 
 ## License

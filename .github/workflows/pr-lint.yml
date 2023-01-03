@@ -4,7 +4,7 @@ on:
   pull_request_target:
 
 jobs:
-  lint-pr:
+  main:
     runs-on: ubuntu-latest
 
     steps:

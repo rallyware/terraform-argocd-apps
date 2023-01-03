@@ -16,7 +16,8 @@ output:
   file: README.md
   mode: replace
   template: |-
-    # terraform-module-template
+    # terraform-argocd-apps
+    Terraform module to provision ArgoCD applications in app of apps pattern.
 
     <!-- BEGIN_TF_DOCS -->
     {{ .Content }}

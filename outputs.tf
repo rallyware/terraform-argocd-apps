@@ -1,4 +1,4 @@
-output "test" {
-  value       = local.enabled
-  description = "Default output"
+output "apps" {
+  value       = [for app in local.apps : app.name]
+  description = "A list of deployed apps"
 }
