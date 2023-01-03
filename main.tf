@@ -1,9 +1,9 @@
 locals {
-  enabled     = module.this.enabled
-  argocd_apps = local.enabled ? var.argocd_apps : []
+  enabled = module.this.enabled
+  apps    = local.enabled ? var.apps : []
 
   argocd_helm_apps_value = {
-    applications = [for app in local.argocd_apps :
+    applications = [for app in local.apps :
       {
         name                     = module.apps_label[app.name].id
         namespace                = app.namespace
@@ -30,7 +30,7 @@ locals {
 }
 
 module "apps_label" {
-  for_each = { for app in local.argocd_apps : app.name => app }
+  for_each = { for app in local.apps : app.name => app }
 
   source  = "cloudposse/label/null"
   version = "0.25.0"

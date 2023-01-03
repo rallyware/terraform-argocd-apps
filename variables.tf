@@ -87,7 +87,7 @@ variable "parent_app" {
   description = "A parent app configuration."
 }
 
-variable "argocd_apps" {
+variable "apps" {
   type = list(object(
     {
       name        = string
