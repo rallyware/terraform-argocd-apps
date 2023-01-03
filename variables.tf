@@ -11,47 +11,77 @@ variable "parent_app" {
       helm = optional(
         object(
           {
-            repo_url        = optional(string, "https://rallyware.github.io/terraform-argocd-apps")
-            chart           = optional(string, "argocd-app-of-apps")
-            target_revision = optional(string, "0.1.0")
+            repository = optional(string)
+            chart      = optional(string)
+            version    = optional(string)
           }
-      ), {})
+        ),
+        {
+          repository = "https://rallyware.github.io/terraform-argocd-apps"
+          chart      = "argocd-app-of-apps"
+          version    = "0.1.0"
+        }
+      )
 
       timeouts = optional(
         object(
           {
-            create = optional(string, "60m")
-            update = optional(string, "60m")
-            delete = optional(string, "60m")
+            create = optional(string)
+            update = optional(string)
+            delete = optional(string)
           }
-      ), {})
+        ),
+        {
+          create = "60m"
+          update = "60m"
+          delete = "60m"
+        }
+      )
 
       retry = optional(
         object(
           {
-            limit                = optional(number, 0)
-            backoff_duration     = optional(string, "30s")
-            backoff_max_duration = optional(string, "1m")
-            backoff_factor       = optional(number, 2)
+            limit                = optional(number)
+            backoff_duration     = optional(string)
+            backoff_max_duration = optional(string)
+            backoff_factor       = optional(number)
           }
-      ), {})
+        ),
+        {
+          limit                = 0
+          backoff_duration     = "30s"
+          backoff_max_duration = "1m"
+          backoff_factor       = 2
+        }
+      )
 
       destination = optional(
         object(
           {
-            name      = optional(string, "in-cluster")
-            namespace = optional(string, "argo")
+            name      = optional(string)
+            namespace = optional(string)
           }
-      ), {})
+        ),
+        {
+          name      = "in-cluster"
+          namespace = "argo"
+        }
+      )
 
       automated = optional(
         object(
           {
-            prune       = optional(bool, true)
-            self_heal   = optional(bool, true)
-            allow_empty = optional(bool, true)
+            prune       = optional(bool)
+            self_heal   = optional(bool)
+            allow_empty = optional(bool)
           }
-      ), {})
+        ),
+        {
+          prune       = true
+          self_heal   = true
+          allow_empty = true
+        }
+      )
     }
   )
   description = "A parent app configuration."
@@ -89,21 +119,34 @@ variable "argocd_apps" {
       retry = optional(
         object(
           {
-            limit                = optional(number, 0)
-            backoff_duration     = optional(string, "30s")
-            backoff_max_duration = optional(string, "1m")
-            backoff_factor       = optional(number, 2)
+            limit                = optional(number)
+            backoff_duration     = optional(string)
+            backoff_max_duration = optional(string)
+            backoff_factor       = optional(number)
           }
-      ), {})
+        ),
+        {
+          limit                = 0
+          backoff_duration     = "30s"
+          backoff_max_duration = "1m"
+          backoff_factor       = 2
+        }
+      )
 
       automated = optional(
         object(
           {
-            prune       = optional(bool, true)
-            self_heal   = optional(bool, true)
-            allow_empty = optional(bool, true)
+            prune       = optional(bool)
+            self_heal   = optional(bool)
+            allow_empty = optional(bool)
           }
-      ), {})
+        ),
+        {
+          prune       = true
+          self_heal   = true
+          allow_empty = true
+        }
+      )
 
       managed_namespace_metadata = optional(
         object(
