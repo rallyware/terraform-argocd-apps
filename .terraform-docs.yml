@@ -1,6 +1,9 @@
 formatter: markdown
 
 content: |-
+  # terraform-argocd-apps
+  Terraform module to provision ArgoCD applications using app of apps pattern.
+
   ## Usage
   ```hcl
   {{ include "examples/basic/main.tf" }}
@@ -16,9 +19,6 @@ output:
   file: README.md
   mode: replace
   template: |-
-    # terraform-argocd-apps
-    Terraform module to provision ArgoCD applications in app of apps pattern.
-
     <!-- BEGIN_TF_DOCS -->
     {{ .Content }}
     <!-- END_TF_DOCS -->
