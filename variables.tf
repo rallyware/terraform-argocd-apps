@@ -11,76 +11,51 @@ variable "parent_app" {
       helm = optional(
         object(
           {
-            repository = optional(string)
-            chart      = optional(string)
-            version    = optional(string)
+            repository = optional(string, "https://rallyware.github.io/terraform-argocd-apps")
+            chart      = optional(string, "argocd-app-of-apps")
+            version    = optional(string, "0.1.0")
           }
-        ),
-        {
-          repository = "https://rallyware.github.io/terraform-argocd-apps"
-          chart      = "argocd-app-of-apps"
-          version    = "0.1.0"
-        }
+        )
       )
 
       timeouts = optional(
         object(
           {
-            create = optional(string)
-            update = optional(string)
-            delete = optional(string)
+            create = optional(string, "60m")
+            update = optional(string, "60m")
+            delete = optional(string, "60m")
           }
-        ),
-        {
-          create = "60m"
-          update = "60m"
-          delete = "60m"
-        }
+        )
       )
 
       retry = optional(
         object(
           {
-            limit                = optional(number)
-            backoff_duration     = optional(string)
-            backoff_max_duration = optional(string)
-            backoff_factor       = optional(number)
+            limit                = optional(number, 0)
+            backoff_duration     = optional(string, "30s")
+            backoff_max_duration = optional(string, "1m")
+            backoff_factor       = optional(number, 2)
           }
-        ),
-        {
-          limit                = 0
-          backoff_duration     = "30s"
-          backoff_max_duration = "1m"
-          backoff_factor       = 2
-        }
+        )
       )
 
       destination = optional(
         object(
           {
-            name      = optional(string)
-            namespace = optional(string)
+            name      = optional(string, "in-cluster")
+            namespace = optional(string, "argo")
           }
-        ),
-        {
-          name      = "in-cluster"
-          namespace = "argo"
-        }
+        )
       )
 
       automated = optional(
         object(
           {
-            prune       = optional(bool)
-            self_heal   = optional(bool)
-            allow_empty = optional(bool)
+            prune       = optional(bool, true)
+            self_heal   = optional(bool, true)
+            allow_empty = optional(bool, true)
           }
-        ),
-        {
-          prune       = true
-          self_heal   = true
-          allow_empty = true
-        }
+        )
       )
     }
   )
@@ -90,20 +65,22 @@ variable "parent_app" {
 variable "apps" {
   type = list(object(
     {
-      name        = string
-      repository  = string
-      version     = string
-      cluster     = string
-      project     = string
-      namespace   = optional(string, "default")
-      chart       = optional(string, "")
-      path        = optional(string, "")
-      values      = optional(string, "")
-      skip_crds   = optional(bool, false)
-      value_files = optional(list(string), [])
-      max_history = optional(number, 10)
-      sync_wave   = optional(number, 50)
-      annotations = optional(map(string), {})
+      name         = string
+      repository   = string
+      version      = string
+      cluster      = optional(string, "in-cluster")
+      project      = string
+      namespace    = optional(string, "default")
+      chart        = optional(string, "")
+      path         = optional(string, "")
+      values       = optional(string, "")
+      skip_crds    = optional(bool, false)
+      value_files  = optional(list(string), [])
+      max_history  = optional(number, 10)
+      sync_wave    = optional(number, 50)
+      annotations  = optional(map(string), {})
+      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
+
       ignore_differences = optional(
         list(object(
           {
@@ -114,38 +91,26 @@ variable "apps" {
           }
         ))
       )
-      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
 
       retry = optional(
         object(
           {
-            limit                = optional(number)
-            backoff_duration     = optional(string)
-            backoff_max_duration = optional(string)
-            backoff_factor       = optional(number)
+            limit                = optional(number, 0)
+            backoff_duration     = optional(string, "30s")
+            backoff_max_duration = optional(string, "1m")
+            backoff_factor       = optional(number, 2)
           }
-        ),
-        {
-          limit                = 0
-          backoff_duration     = "30s"
-          backoff_max_duration = "1m"
-          backoff_factor       = 2
-        }
+        )
       )
 
       automated = optional(
         object(
           {
-            prune       = optional(bool)
-            self_heal   = optional(bool)
-            allow_empty = optional(bool)
+            prune       = optional(bool, true)
+            self_heal   = optional(bool, true)
+            allow_empty = optional(bool, true)
           }
-        ),
-        {
-          prune       = true
-          self_heal   = true
-          allow_empty = true
-        }
+        )
       )
 
       managed_namespace_metadata = optional(
@@ -154,7 +119,8 @@ variable "apps" {
             labels      = optional(map(string))
             annotations = optional(map(string))
           }
-      ), {})
+      ), null)
     }
   ))
+  description = "A list of ArgoCD applications to deploy."
 }

@@ -1,13 +1,34 @@
-# terraform-module-template
-
 <!-- BEGIN_TF_DOCS -->
+# terraform-argocd-apps
+Terraform module to provision ArgoCD applications using app of apps pattern.
+
 ## Usage
 ```hcl
-module "aweasome_module" {
-  source    = "../../"
+module "app" {
+  source = "../../"
+
+  apps = [
+    {
+      name       = "keydb"
+      namespace  = "keydb"
+      chart      = "keydb"
+      repository = "https://enapter.github.io/charts"
+      version    = "0.35.0"
+      sync_wave  = -5
+      project    = "aweasome-project"
+      cluster    = "in-cluster"
+      values = yamlencode(
+        {
+          fullnameOverride = "keydb"
+        }
+      )
+      max_history = 5
+    }
+  ]
+
   name      = "aweasome"
   stage     = "production"
-  namespace = "sweetops"
+  namespace = "rallyware"
 }
 ```
 ## Requirements
@@ -36,8 +57,8 @@ module "aweasome_module" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apps"></a> [apps](#input\_apps) | n/a | <pre>list(object(<br>    {<br>      name        = string<br>      repository  = string<br>      version     = string<br>      cluster     = string<br>      project     = string<br>      namespace   = optional(string, "default")<br>      chart       = optional(string, "")<br>      path        = optional(string, "")<br>      values      = optional(string, "")<br>      skip_crds   = optional(bool, false)<br>      value_files = optional(list(string), [])<br>      max_history = optional(number, 10)<br>      sync_wave   = optional(number, 50)<br>      annotations = optional(map(string), {})<br>      ignore_differences = optional(<br>        list(object(<br>          {<br>            group             = optional(string)<br>            kind              = optional(string)<br>            jqPathExpressions = optional(list(string))<br>            jsonPointers      = optional(list(string))<br>          }<br>        ))<br>      )<br>      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])<br><br>      retry = optional(<br>        object(<br>          {<br>            limit                = optional(number)<br>            backoff_duration     = optional(string)<br>            backoff_max_duration = optional(string)<br>            backoff_factor       = optional(number)<br>          }<br>        ),<br>        {<br>          limit                = 0<br>          backoff_duration     = "30s"<br>          backoff_max_duration = "1m"<br>          backoff_factor       = 2<br>        }<br>      )<br><br>      automated = optional(<br>        object(<br>          {<br>            prune       = optional(bool)<br>            self_heal   = optional(bool)<br>            allow_empty = optional(bool)<br>          }<br>        ),<br>        {<br>          prune       = true<br>          self_heal   = true<br>          allow_empty = true<br>        }<br>      )<br><br>      managed_namespace_metadata = optional(<br>        object(<br>          {<br>            labels      = optional(map(string))<br>            annotations = optional(map(string))<br>          }<br>      ), {})<br>    }<br>  ))</pre> | n/a | yes |
-| <a name="input_parent_app"></a> [parent\_app](#input\_parent\_app) | A parent app configuration. | <pre>object(<br>    {<br>      name         = string<br>      namespace    = optional(string, "argo")<br>      annotations  = optional(map(string))<br>      project      = optional(string)<br>      wait         = optional(bool, false)<br>      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])<br><br>      helm = optional(<br>        object(<br>          {<br>            repository = optional(string)<br>            chart      = optional(string)<br>            version    = optional(string)<br>          }<br>        ),<br>        {<br>          repository = "https://rallyware.github.io/terraform-argocd-apps"<br>          chart      = "argocd-app-of-apps"<br>          version    = "0.1.0"<br>        }<br>      )<br><br>      timeouts = optional(<br>        object(<br>          {<br>            create = optional(string)<br>            update = optional(string)<br>            delete = optional(string)<br>          }<br>        ),<br>        {<br>          create = "60m"<br>          update = "60m"<br>          delete = "60m"<br>        }<br>      )<br><br>      retry = optional(<br>        object(<br>          {<br>            limit                = optional(number)<br>            backoff_duration     = optional(string)<br>            backoff_max_duration = optional(string)<br>            backoff_factor       = optional(number)<br>          }<br>        ),<br>        {<br>          limit                = 0<br>          backoff_duration     = "30s"<br>          backoff_max_duration = "1m"<br>          backoff_factor       = 2<br>        }<br>      )<br><br>      destination = optional(<br>        object(<br>          {<br>            name      = optional(string)<br>            namespace = optional(string)<br>          }<br>        ),<br>        {<br>          name      = "in-cluster"<br>          namespace = "argo"<br>        }<br>      )<br><br>      automated = optional(<br>        object(<br>          {<br>            prune       = optional(bool)<br>            self_heal   = optional(bool)<br>            allow_empty = optional(bool)<br>          }<br>        ),<br>        {<br>          prune       = true<br>          self_heal   = true<br>          allow_empty = true<br>        }<br>      )<br>    }<br>  )</pre> | n/a | yes |
+| <a name="input_apps"></a> [apps](#input\_apps) | A list of ArgoCD applications to deploy. | <pre>list(object(<br>    {<br>      name         = string<br>      repository   = string<br>      version      = string<br>      cluster      = optional(string, "in-cluster")<br>      project      = string<br>      namespace    = optional(string, "default")<br>      chart        = optional(string, "")<br>      path         = optional(string, "")<br>      values       = optional(string, "")<br>      skip_crds    = optional(bool, false)<br>      value_files  = optional(list(string), [])<br>      max_history  = optional(number, 10)<br>      sync_wave    = optional(number, 50)<br>      annotations  = optional(map(string), {})<br>      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])<br><br>      ignore_differences = optional(<br>        list(object(<br>          {<br>            group             = optional(string)<br>            kind              = optional(string)<br>            jqPathExpressions = optional(list(string))<br>            jsonPointers      = optional(list(string))<br>          }<br>        ))<br>      )<br><br>      retry = optional(<br>        object(<br>          {<br>            limit                = optional(number, 0)<br>            backoff_duration     = optional(string, "30s")<br>            backoff_max_duration = optional(string, "1m")<br>            backoff_factor       = optional(number, 2)<br>          }<br>        )<br>      )<br><br>      automated = optional(<br>        object(<br>          {<br>            prune       = optional(bool, true)<br>            self_heal   = optional(bool, true)<br>            allow_empty = optional(bool, true)<br>          }<br>        )<br>      )<br><br>      managed_namespace_metadata = optional(<br>        object(<br>          {<br>            labels      = optional(map(string))<br>            annotations = optional(map(string))<br>          }<br>      ), null)<br>    }<br>  ))</pre> | n/a | yes |
+| <a name="input_parent_app"></a> [parent\_app](#input\_parent\_app) | A parent app configuration. | <pre>object(<br>    {<br>      name         = string<br>      namespace    = optional(string, "argo")<br>      annotations  = optional(map(string))<br>      project      = optional(string)<br>      wait         = optional(bool, false)<br>      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])<br><br>      helm = optional(<br>        object(<br>          {<br>            repository = optional(string, "https://rallyware.github.io/terraform-argocd-apps")<br>            chart      = optional(string, "argocd-app-of-apps")<br>            version    = optional(string, "0.1.0")<br>          }<br>        )<br>      )<br><br>      timeouts = optional(<br>        object(<br>          {<br>            create = optional(string, "60m")<br>            update = optional(string, "60m")<br>            delete = optional(string, "60m")<br>          }<br>        )<br>      )<br><br>      retry = optional(<br>        object(<br>          {<br>            limit                = optional(number, 0)<br>            backoff_duration     = optional(string, "30s")<br>            backoff_max_duration = optional(string, "1m")<br>            backoff_factor       = optional(number, 2)<br>          }<br>        )<br>      )<br><br>      destination = optional(<br>        object(<br>          {<br>            name      = optional(string, "in-cluster")<br>            namespace = optional(string, "argo")<br>          }<br>        )<br>      )<br><br>      automated = optional(<br>        object(<br>          {<br>            prune       = optional(bool, true)<br>            self_heal   = optional(bool, true)<br>            allow_empty = optional(bool, true)<br>          }<br>        )<br>      )<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
@@ -64,4 +85,5 @@ module "aweasome_module" {
 <!-- END_TF_DOCS -->
 
 ## License
+
 The Apache-2.0 license

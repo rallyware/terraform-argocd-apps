@@ -1,7 +1,10 @@
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
+| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | >= 1.2 |
 
 ## Providers
 
@@ -11,7 +14,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aweasome_module"></a> [aweasome\_module](#module\_aweasome\_module) | ../../ | n/a |
+| <a name="module_app"></a> [app](#module\_app) | ../../ | n/a |
 
 ## Resources
 
