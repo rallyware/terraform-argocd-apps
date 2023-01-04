@@ -11,7 +11,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aweasome_module"></a> [aweasome\_module](#module\_aweasome\_module) | ../../ | n/a |
+| <a name="module_app"></a> [app](#module\_app) | ../../ | n/a |
 
 ## Resources
 
