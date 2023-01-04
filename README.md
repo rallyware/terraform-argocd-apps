@@ -1,6 +1,9 @@
 # terraform-module-template
 
 <!-- BEGIN_TF_DOCS -->
+# terraform-argocd-apps
+Terraform module to provision ArgoCD applications using app of apps pattern.
+
 ## Usage
 ```hcl
 module "app" {
