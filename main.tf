@@ -18,12 +18,18 @@ locals {
         ignoreDifferences        = app.ignore_differences != null ? app.ignore_differences : []
         clusterName              = app.cluster
         projectName              = app.project
-        automated                = app.automated
         syncOptions              = app.sync_options
         skipCrds                 = app.skip_crds
         valueFiles               = app.value_files
-        retry                    = app.retry
         managedNamespaceMetadata = app.managed_namespace_metadata
+        retry                    = app.retry
+        revisionHistoryLimit     = app.max_history
+
+        automated = {
+          prune      = app.automated.prune
+          selfHeal   = app.automated.self_heal
+          allowEmpty = app.automated.allow_empty
+        }
       }
     ]
   }
