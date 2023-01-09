@@ -15,8 +15,7 @@ variable "parent_app" {
             chart      = optional(string, "argocd-app-of-apps")
             version    = optional(string, "0.1.0")
           }
-        )
-      )
+      ), {})
 
       timeouts = optional(
         object(
@@ -25,8 +24,7 @@ variable "parent_app" {
             update = optional(string, "60m")
             delete = optional(string, "60m")
           }
-        )
-      )
+      ), {})
 
       retry = optional(
         object(
@@ -36,8 +34,7 @@ variable "parent_app" {
             backoff_max_duration = optional(string, "1m")
             backoff_factor       = optional(number, 2)
           }
-        )
-      )
+      ), {})
 
       destination = optional(
         object(
@@ -45,8 +42,7 @@ variable "parent_app" {
             name      = optional(string, "in-cluster")
             namespace = optional(string, "argo")
           }
-        )
-      )
+      ), {})
 
       automated = optional(
         object(
@@ -55,8 +51,7 @@ variable "parent_app" {
             self_heal   = optional(bool, true)
             allow_empty = optional(bool, true)
           }
-        )
-      )
+      ), {})
     }
   )
   description = "A parent app configuration."
@@ -89,8 +84,7 @@ variable "apps" {
             jqPathExpressions = optional(list(string))
             jsonPointers      = optional(list(string))
           }
-        ))
-      )
+      )), null)
 
       retry = optional(
         object(
@@ -100,8 +94,7 @@ variable "apps" {
             backoff_max_duration = optional(string, "1m")
             backoff_factor       = optional(number, 2)
           }
-        )
-      )
+      ), {})
 
       automated = optional(
         object(
@@ -110,8 +103,7 @@ variable "apps" {
             self_heal   = optional(bool, true)
             allow_empty = optional(bool, true)
           }
-        )
-      )
+      ), {})
 
       managed_namespace_metadata = optional(
         object(
