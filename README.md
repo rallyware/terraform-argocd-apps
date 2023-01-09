@@ -35,7 +35,7 @@ module "app" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.7 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
 | <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | >= 1.2 |
 ## Providers
 
