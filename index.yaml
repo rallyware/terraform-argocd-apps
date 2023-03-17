@@ -3,6 +3,18 @@ entries:
   argocd-app-of-apps:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2023-03-17T18:45:32.818193783Z"
+    description: A Helm chart to deploy ArgoCD app in app of apps pattern
+    digest: 27654031eb723c75d13c78ae2e97e3cd658aff11a46322b5b6b831b1e9d2e60e
+    maintainers:
+    - name: SweetOps
+    name: argocd-app-of-apps
+    type: application
+    urls:
+    - https://github.com/rallyware/terraform-argocd-apps/releases/download/argocd-app-of-apps-0.2.0/argocd-app-of-apps-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2023-01-03T17:00:37.201744488Z"
     description: A Helm chart to deploy ArgoCD app in app of apps pattern
     digest: eac43be0ee8d732326fa314050cb8ea4b3d23516e44dc2e6fd4b15f2a6281821
@@ -13,4 +25,4 @@ entries:
     urls:
     - https://github.com/rallyware/terraform-argocd-apps/releases/download/argocd-app-of-apps-0.1.0/argocd-app-of-apps-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-03T17:00:37.201748588Z"
+generated: "2023-03-17T18:45:32.818207683Z"
