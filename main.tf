@@ -77,7 +77,7 @@ resource "argocd_application" "apps" {
     }
 
     sync_policy {
-      automated = {
+      automated {
         prune       = var.parent_app["automated"]["prune"]
         self_heal   = var.parent_app["automated"]["self_heal"]
         allow_empty = var.parent_app["automated"]["allow_empty"]
@@ -91,7 +91,7 @@ resource "argocd_application" "apps" {
         content {
           limit = var.parent_app["retry"]["limit"]
 
-          backoff = {
+          backoff {
             duration     = var.parent_app["retry"]["backoff_duration"]
             max_duration = var.parent_app["retry"]["backoff_max_duration"]
             factor       = var.parent_app["retry"]["backoff_factor"]

@@ -36,12 +36,12 @@ module "app" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | >= 3.0, < 5.0 |
+| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | >= 6 |
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | >= 3.0, < 5.0 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | >= 6 |
 ## Modules
 
 | Name | Source | Version |
@@ -85,5 +85,4 @@ module "app" {
 <!-- END_TF_DOCS -->
 
 ## License
-
 The Apache-2.0 license
