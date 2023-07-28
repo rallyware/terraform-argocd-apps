@@ -85,5 +85,4 @@ module "app" {
 <!-- END_TF_DOCS -->
 
 ## License
-
 The Apache-2.0 license
