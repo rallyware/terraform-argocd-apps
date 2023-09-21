@@ -9,6 +9,7 @@ applications:
   #   chart: prometheus-community
   #   repoURL: https://prometheus-community.github.io/helm-charts
   #   targetRevision: 15.0.1
+  #   omitFinalizer: false
   #   clusterName: prod
   #   annotations: {}
   #   syncWave: 10

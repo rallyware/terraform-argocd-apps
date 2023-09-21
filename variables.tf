@@ -1,19 +1,20 @@
 variable "parent_app" {
   type = object(
     {
-      name         = string
-      namespace    = optional(string, "argo")
-      annotations  = optional(map(string))
-      project      = optional(string)
-      wait         = optional(bool, false)
-      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
+      name           = string
+      namespace      = optional(string, "argo")
+      annotations    = optional(map(string))
+      project        = optional(string)
+      wait           = optional(bool, false)
+      sync_options   = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
+      omit_finalizer = optional(bool, false)
 
       helm = optional(
         object(
           {
             repository = optional(string, "https://rallyware.github.io/terraform-argocd-apps")
             chart      = optional(string, "argocd-app-of-apps")
-            version    = optional(string, "0.2.0")
+            version    = optional(string, "0.2.1")
           }
       ), {})
 

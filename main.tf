@@ -24,6 +24,7 @@ locals {
         managedNamespaceMetadata = app.managed_namespace_metadata
         retry                    = app.retry
         revisionHistoryLimit     = app.max_history
+        omitFinalizer            = app.omit_finalizer
 
         automated = {
           prune      = app.automated.prune
