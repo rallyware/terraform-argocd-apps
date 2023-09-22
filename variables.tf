@@ -1,13 +1,12 @@
 variable "parent_app" {
   type = object(
     {
-      name           = string
-      namespace      = optional(string, "argo")
-      annotations    = optional(map(string))
-      project        = optional(string)
-      wait           = optional(bool, false)
-      sync_options   = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
-      omit_finalizer = optional(bool, false)
+      name         = string
+      namespace    = optional(string, "argo")
+      annotations  = optional(map(string))
+      project      = optional(string)
+      wait         = optional(bool, false)
+      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
 
       helm = optional(
         object(
@@ -61,21 +60,22 @@ variable "parent_app" {
 variable "apps" {
   type = list(object(
     {
-      name         = string
-      repository   = string
-      version      = string
-      cluster      = optional(string, "in-cluster")
-      project      = string
-      namespace    = optional(string, "default")
-      chart        = optional(string, "")
-      path         = optional(string, "")
-      values       = optional(string, "")
-      skip_crds    = optional(bool, false)
-      value_files  = optional(list(string), [])
-      max_history  = optional(number, 10)
-      sync_wave    = optional(number, 50)
-      annotations  = optional(map(string), {})
-      sync_options = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
+      name           = string
+      repository     = string
+      version        = string
+      cluster        = optional(string, "in-cluster")
+      project        = string
+      namespace      = optional(string, "default")
+      chart          = optional(string, "")
+      path           = optional(string, "")
+      values         = optional(string, "")
+      skip_crds      = optional(bool, false)
+      value_files    = optional(list(string), [])
+      max_history    = optional(number, 10)
+      sync_wave      = optional(number, 50)
+      annotations    = optional(map(string), {})
+      sync_options   = optional(list(string), ["CreateNamespace=true", "ApplyOutOfSyncOnly=true"])
+      omit_finalizer = optional(bool, false)
 
       ignore_differences = optional(
         list(object(
