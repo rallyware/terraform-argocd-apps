@@ -27,9 +27,8 @@ locals {
         omitFinalizer            = app.omit_finalizer
 
         automated = {
-          prune      = app.automated.prune
-          selfHeal   = app.automated.self_heal
-          allowEmpty = app.automated.allow_empty
+          for k, v in app.automated :
+          join("", [split("_", k)[0], try(title(split("_", k)[1]), "")]) => v if v != false
         }
       }
     ]

@@ -70,7 +70,5 @@ spec:
         duration: {{ .retry.backoff_duration }}
         factor: {{ .retry.backoff_factor }}
         maxDuration: {{ .retry.backoff_maxduration }}
-{{- else }}
-    retry: {}
 {{- end }}
 {{- end }}
