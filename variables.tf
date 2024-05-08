@@ -13,7 +13,7 @@ variable "parent_app" {
           {
             repository = optional(string, "https://rallyware.github.io/terraform-argocd-apps")
             chart      = optional(string, "argocd-app-of-apps")
-            version    = optional(string, "0.2.1")
+            version    = optional(string, "0.2.2")
           }
       ), {})
 
